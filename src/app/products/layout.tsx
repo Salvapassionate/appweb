@@ -1,6 +1,7 @@
 import React from 'react';
-import './globals.css';
-import { BusinessProvider } from '../context/BusinessContext';
+import '.././globals.css';
+import { ProductProvider } from '../../context/ProductContext';
+import { CategoryProvider } from '../../context/CategoryContext';
 
 import { ConfigProvider } from 'antd';
 import esES from 'antd/lib/locale/es_ES';
@@ -15,11 +16,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body>
-        <BusinessProvider>
+        <CategoryProvider>
+        <ProductProvider>
           <ConfigProvider locale={esES}>
             {children}
           </ConfigProvider>
-        </BusinessProvider>
+        </ProductProvider>
+        </CategoryProvider>
       </body>
     </html>
   );

@@ -1,113 +1,183 @@
-import Image from "next/image";
+"use client";
+import { Table, Button, Modal } from "antd";
+import Link from "next/link";
+import { useBusinessContext } from "../context/BusinessContext";
+import { useState } from "react";
+import { Business } from "../types";
+import styled from "styled-components";
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+// Definimos los estilos utilizando styled-components
+const PageContainer = styled.div`
+  background-color: #f8f9fa; // Fondo de color suave
+  padding: 20px;
+  min-height: 100vh;
+`;
+
+const StyledButton = styled(Button)`
+  margin-right: 8px;
+  background-color: #007bff; // Color primario
+  border-color: #007bff;
+  &:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+`;
+
+const StyledSecondaryButton = styled(Button)`
+  background-color: #ef5a29; // Color secundario
+  border-color: #ef5a29;
+  color:#ffffff;
+  &:hover {
+    background-color: #ef5a29;
+    border-color: #ef5a29;
+    color:#ffffff;
+  }
+`;
+
+const Navbar = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff; // Fondo blanco
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Sombra en los bordes
+  margin-bottom: 20px;
+`;
+
+const NavbarLinks = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const NavbarLink = styled.span`
+  margin-right: 16px;
+  color: #007bff; // Color azul
+  font-size: 18px; // Tamaño de fuente grande
+  text-decoration: none;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const TableContainer = styled.div`
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const ModalContent = styled.div`
+  img {
+    max-width: 200px;
+    margin-bottom: 20px;
+  }
+  p {
+    margin-bottom: 8px;
+  }
+`;
+
+const BusinessList = () => {
+  const { businesses } = useBusinessContext();
+  const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  
+   // Muestra el modal con la información de la empresa seleccionada.
+   
+   
+   const showModal = (business: Business) => {
+    setSelectedBusiness(business);
+    setIsModalVisible(true);
+  };
+
+  
+   // Maneja la acción de confirmar en el modal.
+  
+  const handleOk = () => {
+    setIsModalVisible(false);
+    setSelectedBusiness(null);
+  };
+
+ 
+   //Maneja la acción de cancelar en el modal.
+   
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setSelectedBusiness(null);
+  };
+
+  // Definición de las columnas de la tabla
+  const columns = [
+    { title: "Nombre Comercial", dataIndex: "nombreComercial", key: "nombreComercial" },
+    { title: "Sector", dataIndex: "sector", key: "sector" },
+    { title: "Estado", dataIndex: "estado", key: "estado", render: (estado: boolean) => (estado ? "Activo" : "Inactivo") },
+    { title: "Fecha de Creación", dataIndex: "fechaCreacion", key: "fechaCreacion", render: (fechaCreacion: Date) => new Date(fechaCreacion).toLocaleString() },
+    { title: "Fecha de Actualización", dataIndex: "fechaActualizacion", key: "fechaActualizacion", render: (fechaActualizacion: Date) => new Date(fechaActualizacion).toLocaleString() },
+    {
+      title: "Acciones",
+      key: "acciones",
+      render: (text_: any, record: Business) => (
+        <div>
+          <Link href={`/edit/${record.id}`}>
+            <StyledButton type="primary">Editar</StyledButton>
+          </Link>
+          <StyledSecondaryButton onClick={() => showModal(record)}>Ver</StyledSecondaryButton>
         </div>
-      </div>
+      ),
+    },
+  ];
+  console.log("Empresa",selectedBusiness?.logoUrl);
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+  return (
+    <PageContainer>
+      <Navbar>
+        <NavbarLink>
+          <div>I-STRATEGIES</div>
+        </NavbarLink>
+        <NavbarLinks>
+          <Link href={`/create`}>
+            <NavbarLink>Crear Empresa</NavbarLink>
+          </Link>
+          <Link href={`/categories`}>
+            <NavbarLink>Ver Categorías de Productos</NavbarLink>
+          </Link>
+          <Link href={`/products`}>
+            <NavbarLink>Ver Productos</NavbarLink>
+          </Link>
+        </NavbarLinks>
+      </Navbar>
+      <TableContainer>
+        <Table dataSource={businesses} columns={columns} rowKey="id" />
+      </TableContainer>
+      <Modal
+        title="Información de la Empresa"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        {selectedBusiness && (
+          <ModalContent>
+            {selectedBusiness.logoUrl && <img src={selectedBusiness.logoUrl} alt="Logo de la empresa" />}
+            <p>Razon Social: {selectedBusiness.razonSocial}</p>
+            <p>Nombre Comercial: {selectedBusiness.nombreComercial}</p>
+            <p>Quienes somos: {selectedBusiness.quienesSomos}</p>
+            <p>Sector: {selectedBusiness.sector}</p>
+            <p>Horario: {selectedBusiness.horario}</p>
+            <p>Telefono: {selectedBusiness.telefono}</p>
+            <p>Facebook: {selectedBusiness.facebook}</p>
+            <p>Instragam: {selectedBusiness.instagram}</p>
+            <p>Linkedin: {selectedBusiness.linkedin}</p>
+            <p>YouTube: {selectedBusiness.youtube}</p>
+            <p>Sitio Web: {selectedBusiness.sitioWeb}</p>
+            <p>Direccion: {selectedBusiness.direccion}</p>
+            <p>Direccion Georreferencia: {selectedBusiness.direccionGeorreferenciada}</p>
+          </ModalContent>
+        )}
+      </Modal>
+    </PageContainer>
   );
-}
+};
+
+export default BusinessList;
+
