@@ -780,27 +780,29 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
 >
   <Tooltip
     title={
-      activeBusinesses.length > 0 || activeCategories.length > 0
-        ? "No puedes desactivar este producto porque está asociado."
+      (!activeBusinesses.length || !activeCategories.length)
+        ? "No puedes desactivar este producto porque está asociado a una Empresa o Categoría inactiva."
         : ""
     }
   >
     <Switch
       defaultChecked={product ? product.estado : true}
       onChange={(checked) => {
-        if (!checked && (activeBusinesses.length > 0 || activeCategories.length > 0)) {
-          message.error("No puedes desactivar este producto porque está asociado.");
-          form.setFieldsValue({ estado: true });
+        if (!checked) {
+          if (!activeBusinesses.length || !activeCategories.length) {
+            message.error("No puedes desactivar este producto porque está asociado a una Empresa o Categoría inactiva.");
+            form.setFieldsValue({ estado: true });
+          } else {
+            form.setFieldsValue({ estado: false });
+          }
         } else {
           form.setFieldsValue({ estado: checked });
         }
       }}
-      disabled={(activeBusinesses.length > 0 || activeCategories.length > 0) && !product?.estado}
+      disabled={(!activeBusinesses.length || !activeCategories.length) && !product?.estado}
     />
   </Tooltip>
 </StyledFormItem>
-
-
         <Form.Item>
           <StyledButton type="primary" htmlType="submit">
             Guardar

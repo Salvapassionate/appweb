@@ -394,7 +394,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
   const handleFileChange = ({ fileList }: any) => {
     setFileList(fileList);
   };
-
+  console.log("Existe imagen",existingLogoUrl);
   return (
     <StyledForm form={form} layout="vertical" initialValues={category} onFinish={onFinish}>
       <StyledFormItem
@@ -431,39 +431,32 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
         <Input />
       </StyledFormItem>
       <StyledFormItem
-        name="descripcion"
-        label="Descripción de la categoría producto"
-        rules={[{ required: true, message: "Por favor, ingresa la descripción de la categoría de producto" }]}
-      >
-        <Input.TextArea />
-      </StyledFormItem>
-      <StyledFormItem
-        name="estado"
-        label="Estado de categoria de producto"
-        valuePropName="checked"
-        initialValue={category ? category.estado : true}
-      >
-        <Tooltip
-          title={
-            associatedProducts.length > 0
-              ? "No puedes desactivar esta categoría porque tiene productos asociados."
-              : ""
-          }
-        >
-          <OrangeSwitch
-            defaultChecked={category ? category.estado : true}
-            onChange={(checked) => {
-              if (!checked && associatedProducts.length > 0) {
-                message.error("No puedes desactivar esta categoría porque tiene productos asociados.");
-                form.setFieldsValue({ estado: true });
-              } else {
-                form.setFieldsValue({ estado: checked });
-              }
-            }}
-            disabled={associatedProducts.length > 0 && !category?.estado}
-          />
-        </Tooltip>
-      </StyledFormItem>
+  name="estado"
+  label="Estado de categoría de producto"
+  valuePropName="checked"
+  initialValue={category ? category.estado : true}
+>
+  <Tooltip
+    title={
+      associatedProducts.length > 0
+        ? "No puedes desactivar esta categoría porque tiene productos asociados."
+        : ""
+    }
+  >
+    <OrangeSwitch
+      defaultChecked={category ? category.estado : true}
+      onChange={(checked) => {
+        if (!checked && associatedProducts.length > 0) {
+          message.error("No puedes desactivar esta categoría porque tiene productos asociados.");
+          form.setFieldsValue({ estado: true });
+        } else {
+          form.setFieldsValue({ estado: checked });
+        }
+      }}
+      disabled={associatedProducts.length > 0 && !category?.estado}
+    />
+  </Tooltip>
+</StyledFormItem>
       <Form.Item>
         <StyledButton type="primary" htmlType="submit">
           Guardar

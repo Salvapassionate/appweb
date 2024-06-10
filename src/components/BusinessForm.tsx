@@ -1073,6 +1073,26 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
   const [fileList, setFileList] = useState<any[]>([]);
   const [uploading, setUploading] = useState(false);
   const [associatedProducts, setAssociatedProducts] = useState<Business[]>([]);
+  const [existingLogoUrl, setExistingLogoUrl] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (business) {
+      form.setFieldsValue(business);
+      if (business.logoUrl) {
+        setExistingLogoUrl(business.logoUrl);
+        setFileList([
+          {
+            uid: '-1',
+            name: 'logo.png',
+            status: 'done',
+            url: business.logoUrl,
+          },
+        ]);
+      }
+      console.log("Business ID en BusinessForm:", business.id); // Verifica que el ID esté disponible
+      console.log("Business logoUrl en BusinessForm:", business.logoUrl); // Verifica que el logoUrl esté disponible
+    }
+  }, [business, form]);
 
   useEffect(() => {
     if (business) {
@@ -1112,15 +1132,21 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
     };
 
     try {
-      let imageUrl = "";
-      if (fileList.length > 0) {
+      let imageUrl: string | undefined = existingLogoUrl;
+      if (fileList.length > 0 && fileList[0].originFileObj) {
         const file = fileList[0].originFileObj;
+        console.log("Archivo seleccionado:", file);
         const storageRef = ref(storage, `logos/${file.name}`);
         await uploadBytes(storageRef, file);
         imageUrl = await getDownloadURL(storageRef);
+        console.log("URL de la imagen subida:", imageUrl);
+        updatedBusiness.logoUrl = imageUrl;
+      } else {
         updatedBusiness.logoUrl = imageUrl;
       }
+      console.log("Datos del negocio antes de guardar en Firestore:", updatedBusiness);
       delete (updatedBusiness as Business).logo;
+
       if (business && business.id) {
         const businessRef = doc(db, "businesses", business.id);
         await updateDoc(businessRef, updatedBusiness);
@@ -1147,6 +1173,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
   const handleFileChange = ({ fileList }: any) => {
     setFileList(fileList);
   };
+  console.log("Existe imagen",existingLogoUrl);
 
   return (
     <StyledForm
@@ -1158,7 +1185,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
       <StyledFormItem
         name="logo"
         label="Logo"
-        rules={[{ required: true, message: "Por favor, sube el logo de la empresa" }]}
+        rules={[{  required: !existingLogoUrl, message: "Por favor, sube el logo de la empresa" }]}
       >
         <Upload
           fileList={fileList}
@@ -1176,6 +1203,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
             return true;
           }}
           onChange={handleFileChange}
+          listType="picture"
         >
           <StyledButton icon={<UploadOutlined />}>Subir Logo</StyledButton>
         </Upload>
@@ -1303,35 +1331,32 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
         <Input />
       </StyledFormItem>
       <StyledFormItem
-      name="estado"
-      label="Estado de empresa"
-      valuePropName="checked"
-      initialValue={business ? business.estado : true}
-      >
-      <Tooltip
-      title={
+  name="estado"
+  label="Estado de empresa"
+  valuePropName="checked"
+  initialValue={business ? business.estado : true}
+>
+  <Tooltip
+    title={
       associatedProducts.length > 0
         ? "No puedes desactivar esta empresa porque tiene productos asociados."
         : ""
-      }
-      >
-      <Switch
+    }
+  >
+    <Switch
       defaultChecked={business ? business.estado : true}
       onChange={(checked) => {
         if (!checked && associatedProducts.length > 0) {
-          message.error(
-            "No puedes desactivar esta categoría porque tiene productos asociados."
-          );
+          message.error("No puedes desactivar esta empresa porque tiene productos asociados.");
           form.setFieldsValue({ estado: true });
         } else {
           form.setFieldsValue({ estado: checked });
         }
       }}
       disabled={associatedProducts.length > 0 && !business.estado}
-       />
-       </Tooltip>
-      </StyledFormItem>
-
+    />
+  </Tooltip>
+</StyledFormItem>
       <StyledFormItem>
         <StyledButton type="primary" htmlType="submit">
           Guardar
