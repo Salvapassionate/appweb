@@ -144,7 +144,7 @@ const CategoryList = () => {
           </Link>
         </NavbarLinks>
       </Navbar>
-      <Title>Categoria de productos</Title>
+      <Title>Categoría de productos</Title>
       <TableContainer>
         <Table dataSource={categories} columns={columns} rowKey="id" />
       </TableContainer>

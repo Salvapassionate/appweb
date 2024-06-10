@@ -451,14 +451,16 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
           }
         >
           <OrangeSwitch
-            defaultChecked
-            disabled={associatedProducts.length > 0}
+            defaultChecked={category ? category.estado : true}
             onChange={(checked) => {
               if (!checked && associatedProducts.length > 0) {
                 message.error("No puedes desactivar esta categoría porque tiene productos asociados.");
                 form.setFieldsValue({ estado: true });
+              } else {
+                form.setFieldsValue({ estado: checked });
               }
             }}
+            disabled={associatedProducts.length > 0 && !category?.estado}
           />
         </Tooltip>
       </StyledFormItem>

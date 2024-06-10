@@ -1303,32 +1303,35 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
         <Input />
       </StyledFormItem>
       <StyledFormItem
-        name="estado"
-        label="Estado de empresa"
-        valuePropName="checked"
-        initialValue={business ? business.estado : true}
+      name="estado"
+      label="Estado de empresa"
+      valuePropName="checked"
+      initialValue={business ? business.estado : true}
       >
-        <Tooltip
-          title={
-            associatedProducts.length > 0
-              ? "No puedes desactivar esta empresa porque tiene productos asociados."
-              : ""
-          }
-        >
-          <Switch
-            defaultChecked
-            disabled={associatedProducts.length > 0}
-            onChange={(checked) => {
-              if (!checked && associatedProducts.length > 0) {
-                message.error(
-                  "No puedes desactivar esta categoría porque tiene productos asociados."
-                );
-                form.setFieldsValue({ estado: true });
-              }
-            }}
-          />
-        </Tooltip>
+      <Tooltip
+      title={
+      associatedProducts.length > 0
+        ? "No puedes desactivar esta empresa porque tiene productos asociados."
+        : ""
+      }
+      >
+      <Switch
+      defaultChecked={business ? business.estado : true}
+      onChange={(checked) => {
+        if (!checked && associatedProducts.length > 0) {
+          message.error(
+            "No puedes desactivar esta categoría porque tiene productos asociados."
+          );
+          form.setFieldsValue({ estado: true });
+        } else {
+          form.setFieldsValue({ estado: checked });
+        }
+      }}
+      disabled={associatedProducts.length > 0 && !business.estado}
+       />
+       </Tooltip>
       </StyledFormItem>
+
       <StyledFormItem>
         <StyledButton type="primary" htmlType="submit">
           Guardar

@@ -731,22 +731,38 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
         <Input  />
       </StyledFormItem>
       <StyledFormItem
-        name="categoria"
-        label="Categoría de producto"
-        rules={[{ required: true, message: "Por favor, selecciona la categoría del producto" }]}
-      >
-        <Select>
-          {activeCategories.map((category) => (
-            <Select.Option key={category.id} value={category.id}>
-              {category.nombre}
-            </Select.Option>
-          ))}
-        </Select>
-      </StyledFormItem>
+  name="categoria"
+  label="Categoría de producto"
+  rules={[
+    {
+      validator: (_, value) => {
+        if ((activeCategories.length > 0) && !value) {
+          return Promise.reject(new Error("Por favor, selecciona la categoría del producto"));
+        }
+        return Promise.resolve();
+      },
+    },
+  ]}
+>
+  <Select>
+    {activeCategories.map((category) => (
+      <Select.Option key={category.id} value={category.id}>
+        {category.nombre}
+      </Select.Option>
+    ))}
+  </Select>
+</StyledFormItem>
       <StyledFormItem
         name="empresa"
         label="Empresa que vende el producto"
-        rules={[{ required: true, message: "Por favor, selecciona la empresa que vende el producto" }]}
+        rules={[ {
+          validator: (_, value) => {
+            if ((activeBusinesses.length > 0 ) && !value) {
+              return Promise.reject(new Error("Por favor, selecciona la categoría del producto"));
+            }
+            return Promise.resolve();
+          },
+        },]}
       >
         <Select>
           {activeBusinesses.map((business) => (
@@ -757,30 +773,34 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
         </Select>
       </StyledFormItem>
       <StyledFormItem
-        name="estado"
-        label="Estado de producto"
-        valuePropName="checked"
-        initialValue={product ? product.estado : true}
-        >
-          <Tooltip
-          title={
-            activeBusinesses.length || activeCategories.length> 0
-              ? "No puedes desactivar este producto esta asociado."
-              : ""
-          }
-        >
-          <Switch
-            defaultChecked
-            disabled={activeBusinesses.length>0 || activeCategories.length > 0}
-            onChange={(checked) => {
-              if (!checked && activeBusinesses.length && activeCategories.length > 0) {
-                message.error("No puedes desactivar este producto porque esta asociado.");
-                form.setFieldsValue({ estado: true });
-              }
-            }}
-          />
-        </Tooltip>
-        </StyledFormItem>
+  name="estado"
+  label="Estado de producto"
+  valuePropName="checked"
+  initialValue={product ? product.estado : true}
+>
+  <Tooltip
+    title={
+      activeBusinesses.length > 0 || activeCategories.length > 0
+        ? "No puedes desactivar este producto porque está asociado."
+        : ""
+    }
+  >
+    <Switch
+      defaultChecked={product ? product.estado : true}
+      onChange={(checked) => {
+        if (!checked && (activeBusinesses.length > 0 || activeCategories.length > 0)) {
+          message.error("No puedes desactivar este producto porque está asociado.");
+          form.setFieldsValue({ estado: true });
+        } else {
+          form.setFieldsValue({ estado: checked });
+        }
+      }}
+      disabled={(activeBusinesses.length > 0 || activeCategories.length > 0) && !product?.estado}
+    />
+  </Tooltip>
+</StyledFormItem>
+
+
         <Form.Item>
           <StyledButton type="primary" htmlType="submit">
             Guardar
