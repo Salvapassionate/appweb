@@ -79,6 +79,13 @@ const ModalContent = styled.div`
   }
 `;
 
+const Title = styled.h1`
+  color: #0052FF;
+  font-size: 2.5rem;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 2rem;
+`;
 
 const ProductList = () => {
   const { products, addProduct } = useProductContext();
@@ -145,21 +152,22 @@ const ProductList = () => {
         </NavbarLink>
         <NavbarLinks>
           <Link href={`/products/create`}>
-            <NavbarLink>Crear Producto</NavbarLink>
+            <NavbarLink>Crear producto</NavbarLink>
           </Link>
           <Link href={`/`}>
-            <NavbarLink>Ver Empresas</NavbarLink>
+            <NavbarLink>Ver empresas</NavbarLink>
           </Link>
           <Link href={`/categories`}>
-            <NavbarLink>Ver Categorías de Productos</NavbarLink>
+            <NavbarLink>Ver categorías de productos</NavbarLink>
           </Link>
         </NavbarLinks>
       </Navbar>
+      <Title>Productos</Title>
       <TableContainer>
         <Table dataSource={products} columns={columns} rowKey="id" />
       </TableContainer>
       <Modal
-        title="Información del Producto"
+        title="Información del producto"
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}

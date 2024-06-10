@@ -1182,7 +1182,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
       </StyledFormItem>
       <StyledFormItem
         name="nombreComercial"
-        label="Nombre Comercial"
+        label="Nombre comercial"
         rules={[{ required: true, message: "Por favor, ingresa el nombre comercial" }]}
       >
         <Input />
@@ -1193,26 +1193,29 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
         rules={[{ required: true, message: "Por favor, selecciona el sector" }]}
       >
         <Select>
-          <Select.Option value="technology">Tecnología</Select.Option>
-          <Select.Option value="healthcare">Salud</Select.Option>
-          <Select.Option value="finance">Finanzas</Select.Option>
+          <Select.Option value="Tecnologia">Tecnología</Select.Option>
+          <Select.Option value="Salud">Salud</Select.Option>
+          <Select.Option value="Finanzas">Finanzas</Select.Option>
         </Select>
       </StyledFormItem>
       <StyledFormItem
         name="razonSocial"
-        label="Razón Social"
+        label="Razón social"
         rules={[{ required: true, message: "Por favor, ingresa la razón social" }]}
       >
         <Input />
       </StyledFormItem>
       <StyledFormItem
         name="quienesSomos"
-        label="Quiénes Somos"
+        label="Quiénes somos"
         rules={[{ required: true, message: "Por favor, ingresa la descripción de quiénes somos" }]}
       >
         <Input.TextArea />
       </StyledFormItem>
-      <Form.List name="horario">
+      <StyledFormItem
+      label="Horario"
+      >
+      <Form.List name="horario" >
         {(fields, { add, remove }) => (
           <>
             {fields.map((field) => (
@@ -1244,7 +1247,9 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
                 <MinusCircleOutlined onClick={() => remove(field.name)} style={{ color: 'white', marginLeft: 8 }} />
               </div>
             ))}
-            <Form.Item>
+            <Form.Item
+             rules={[{ required: true, message: "Por favor, ingresa el horario" }]}
+            >
               <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                 Agregar horario
               </Button>
@@ -1252,6 +1257,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
           </>
         )}
       </Form.List>
+      </StyledFormItem>
       <StyledFormItem
         name="instagram"
         label="Instagram"
@@ -1275,7 +1281,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
       </StyledFormItem>
       <StyledFormItem
         name="sitioWeb"
-        label="Sitio Web"
+        label="Sitio web"
         rules={[
           { type: 'url', message: 'La URL no es válida' },
           { pattern: /\.com$/, message: 'El sitio web debe terminar con .com' }
@@ -1292,7 +1298,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({ business }) => {
       </StyledFormItem>
       <StyledFormItem
         name="direccionGeorreferenciada"
-        label="Dirección Georreferenciada"
+        label="Dirección georreferenciada"
       >
         <Input />
       </StyledFormItem>

@@ -702,21 +702,21 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
       </StyledFormItem>
       <StyledFormItem
         name="nombre"
-        label="Nombre de Producto"
+        label="Nombre de producto"
         rules={[{ required: true, message: "Por favor, ingresa el nombre del producto" }]}
       >
         <Input />
       </StyledFormItem>
       <StyledFormItem
         name="descripcion"
-        label="Descripción de Producto"
+        label="Descripción de producto"
         rules={[{ required: true, message: "Por favor, ingresa la descripción del producto" }]}
       >
         <Input.TextArea />
       </StyledFormItem>
       <StyledFormItem
        name="precio"
-       label="Precio de Producto"
+       label="Precio de producto"
        rules={[
          { 
            required: true, 
@@ -732,7 +732,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
       </StyledFormItem>
       <StyledFormItem
         name="categoria"
-        label="Categoría de Producto"
+        label="Categoría de producto"
         rules={[{ required: true, message: "Por favor, selecciona la categoría del producto" }]}
       >
         <Select>
@@ -745,7 +745,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
       </StyledFormItem>
       <StyledFormItem
         name="empresa"
-        label="Empresa que Vende el Producto"
+        label="Empresa que vende el producto"
         rules={[{ required: true, message: "Por favor, selecciona la empresa que vende el producto" }]}
       >
         <Select>

@@ -74,7 +74,13 @@ const ModalContent = styled.div`
     margin-bottom: 8px;
   }
 `;
-
+const Title = styled.h1`
+  color: #0052FF;
+  font-size: 2.5rem;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 2rem;
+`;
 
 const CategoryList = () => {
   const { categories } = useCategoryContext();
@@ -128,21 +134,22 @@ const CategoryList = () => {
         </NavbarLink>
         <NavbarLinks>
           <Link href={`/categories/create`}>
-            <NavbarLink>Crear Categoria</NavbarLink>
+            <NavbarLink>Crear categoría</NavbarLink>
           </Link>
           <Link href={`/`}>
-            <NavbarLink>Ver Empresas</NavbarLink>
+            <NavbarLink>Ver empresas</NavbarLink>
           </Link>
           <Link href={`/products`}>
-            <NavbarLink>Ver Productos</NavbarLink>
+            <NavbarLink>Ver productos</NavbarLink>
           </Link>
         </NavbarLinks>
       </Navbar>
+      <Title>Categoria de productos</Title>
       <TableContainer>
         <Table dataSource={categories} columns={columns} rowKey="id" />
       </TableContainer>
       <Modal
-        title="Información de la Categoria de empresa"
+        title="Información de la categoría de producto"
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -150,7 +157,7 @@ const CategoryList = () => {
         {selectedCategory && (
           <ModalContent>
             {selectedCategory.iconoUrl && <img src={selectedCategory.iconoUrl} alt="Icono de la categoria de la empresa" style={{ maxWidth: "200px" }} />}
-            <p>Nombre Comercial: {selectedCategory.nombre}</p>
+            <p>Categoria: {selectedCategory.nombre}</p>
             <p>Descripcion: {selectedCategory.descripcion}</p>
           </ModalContent>
         )}

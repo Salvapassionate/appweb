@@ -425,21 +425,21 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
       </StyledFormItem>
       <StyledFormItem
         name="nombre"
-        label="Nombre Categoria Producto"
+        label="Nombre categoría producto"
         rules={[{ required: true, message: "Por favor, ingresa el nombre de la categoría" }]}
       >
         <Input />
       </StyledFormItem>
       <StyledFormItem
         name="descripcion"
-        label="Descripción de la cateogoria producto"
+        label="Descripción de la categoría producto"
         rules={[{ required: true, message: "Por favor, ingresa la descripción de la categoría de producto" }]}
       >
         <Input.TextArea />
       </StyledFormItem>
       <StyledFormItem
         name="estado"
-        label="Estado de categoria de Producto"
+        label="Estado de categoria de producto"
         valuePropName="checked"
         initialValue={category ? category.estado : true}
       >

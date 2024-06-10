@@ -37,8 +37,8 @@ const Title = styled.h1`
 const CreateCategory = () => {
   return (
     <PageContainer>
-      <Title>Empresas</Title>
-        <BusinessForm/>
+      <Title>Crear empresa</Title>
+        <BusinessForm />
     </PageContainer>
   );
 };

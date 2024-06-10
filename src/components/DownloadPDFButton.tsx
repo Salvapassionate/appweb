@@ -194,7 +194,7 @@ const DownloadPDFButton: React.FC<DownloadPDFButtonProps> = ({
 
     // Añadir título
     doc.setFontSize(18);
-    doc.text('Ficha Técnica del Producto', 14, 22);
+    doc.text('Ficha Técnica del producto', 14, 22);
 
     // Añadir logo para PDF si está disponible
     if (logoUrl) {
@@ -215,17 +215,17 @@ const DownloadPDFButton: React.FC<DownloadPDFButtonProps> = ({
  doc.text(productEmpresa, 14, textY + 5);
 
  doc.setFontSize(12);
- doc.text('Nombre del Producto:', 14, textY + 17);
+ doc.text('Nombre del producto:', 14, textY + 17);
  doc.setFontSize(10);
  doc.text(productName, 14, textY + 22);
 
  doc.setFontSize(12);
- doc.text('Costo del Producto:', 14, textY + 32);
+ doc.text('Costo del producto:', 14, textY + 32);
  doc.setFontSize(10);
  doc.text(`$${productPrice}`, 14, textY + 37);
 
  doc.setFontSize(12);
- doc.text('Descripción del Producto:', 14, textY + 47);
+ doc.text('Descripción del producto:', 14, textY + 47);
  doc.setFontSize(10);
  doc.text(productDescription, 14, textY + 52);
 

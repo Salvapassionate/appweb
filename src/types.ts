@@ -1,3 +1,9 @@
+export interface Horario {
+  dia: string;
+  inicio: string;
+  fin: string;
+}
+
 export interface Business {
     id: string;
     logoUrl: string;
@@ -8,7 +14,10 @@ export interface Business {
     fechaActualizacion: Date;
     razonSocial: string;
     quienesSomos: string;
-    horario: string;
+    horario: Horario[];
+    inicio: string;
+    fin: string;
+    dia: string;
     telefono: string;
     facebook: string;
     instagram: string;

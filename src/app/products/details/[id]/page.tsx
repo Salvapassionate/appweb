@@ -291,20 +291,29 @@ const ProductDetail: React.FC = () => {
     <StyledTechSheet>
       <h1>Ficha Técnica</h1>
       <div className="center">
-      <p><strong>Logo del Producto</strong></p>
+      <p><strong>Logo del producto</strong></p>
         {product.logoUrl && <img src={product.logoUrl} alt="Logo del producto" />}
-        <p><strong>Nombre del Producto:</strong> {product.nombre}</p>
-        <p><strong>Costo del Producto:</strong> ${product.precio}</p>
-        <p><strong>Descripción del Producto:</strong> {product.descripcion}</p>
+        <p><strong>Nombre del producto:</strong> {product.nombre}</p>
+        <p><strong>Costo del producto:</strong> ${product.precio}</p>
+        <p><strong>Descripción del producto:</strong> {product.descripcion}</p>
         <p><strong>Categoria del producto:</strong> {product.categoria}</p>
         <p><strong>Empresa del producto:</strong> {product.empresa}</p>
         <p><strong>Logo de la empresa:</strong></p>
         {business.logoUrl && <img src={business.logoUrl} alt="Logo de la empresa" />}
         <p><strong>Nombre de la empresa</strong> {business.nombreComercial}</p>
-        <p><strong>Razon Social:</strong> {business.razonSocial}</p>
-        <p><strong>Quienes Somos:</strong> {business.quienesSomos}</p>
+        <p><strong>Razon social:</strong> {business.razonSocial}</p>
+        <p><strong>Quienes somos:</strong> {business.quienesSomos}</p>
         <p><strong>Sector:</strong> {business.sector}</p>
-        <p><strong>Horario</strong> {business.horario}</p>
+        <div>
+        <strong><p>Horario:</p></strong>
+            <ul>
+              {business.horario.map((entry, index) => (
+                <li key={index}>
+                  {entry.dia}: {entry.inicio} - {entry.fin}
+                </li>
+              ))}
+            </ul>
+          </div>
         <p><strong>Telefono:</strong> {business.telefono}</p>
         <p><strong>Facebook:</strong> {business.facebook}</p>
         <p><strong>Instagram:</strong> {business.instagram}</p>
@@ -312,7 +321,7 @@ const ProductDetail: React.FC = () => {
         <p><strong>Youtube:</strong> {business.youtube}</p>
         <p><strong>Sitio Web:</strong> {business.sitioWeb}</p>
         <p><strong>Direccion:</strong> {business.direccion}</p>
-        <p><strong>Direccion Georreferncia</strong> {business.direccionGeorreferenciada}</p>
+        <p><strong>Direccion georreferncia</strong> {business.direccionGeorreferenciada}</p>
       </div>
       <QRCode value={productUrl} />
       <DownloadPDFButton

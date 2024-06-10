@@ -58,7 +58,7 @@ console.log("ID de categoria empresa:", id);
 return (
   <div>
     <PageContainer>
-     <Title>Editar Categorias de Productos</Title>
+     <Title>Editar categoría de producto</Title>
     {category ? <CategoryForm category={category} /> : <p>Empresa no encontrada</p>}
     </PageContainer>
   </div>

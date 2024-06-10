@@ -59,7 +59,7 @@ const EditProduct = () => {
   return (
     <div>
     <PageContainer>
-      <Title>Editar Productos</Title>
+      <Title>Editar producto</Title>
       {product ? <ProductForm product={product} /> : <p>Empresa no encontrada</p>}
     </PageContainer>
     </div>

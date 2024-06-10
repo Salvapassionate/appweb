@@ -76,6 +76,13 @@ const ModalContent = styled.div`
     margin-bottom: 8px;
   }
 `;
+const Title = styled.h1`
+  color: #0052FF;
+  font-size: 2.5rem;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 2rem;
+`;
 
 const BusinessList = () => {
   const { businesses } = useBusinessContext();
@@ -109,11 +116,11 @@ const BusinessList = () => {
 
   // Definición de las columnas de la tabla
   const columns = [
-    { title: "Nombre Comercial", dataIndex: "nombreComercial", key: "nombreComercial" },
+    { title: "Nombre comercial", dataIndex: "nombreComercial", key: "nombreComercial" },
     { title: "Sector", dataIndex: "sector", key: "sector" },
     { title: "Estado", dataIndex: "estado", key: "estado", render: (estado: boolean) => (estado ? "Activo" : "Inactivo") },
-    { title: "Fecha de Creación", dataIndex: "fechaCreacion", key: "fechaCreacion", render: (fechaCreacion: Date) => new Date(fechaCreacion).toLocaleString() },
-    { title: "Fecha de Actualización", dataIndex: "fechaActualizacion", key: "fechaActualizacion", render: (fechaActualizacion: Date) => new Date(fechaActualizacion).toLocaleString() },
+    { title: "Fecha de creación", dataIndex: "fechaCreacion", key: "fechaCreacion", render: (fechaCreacion: Date) => new Date(fechaCreacion).toLocaleString() },
+    { title: "Fecha de actualización", dataIndex: "fechaActualizacion", key: "fechaActualizacion", render: (fechaActualizacion: Date) => new Date(fechaActualizacion).toLocaleString() },
     {
       title: "Acciones",
       key: "acciones",
@@ -127,7 +134,7 @@ const BusinessList = () => {
       ),
     },
   ];
-  console.log("Empresa",selectedBusiness?.logoUrl);
+  console.log("Horario",selectedBusiness);
 
   return (
     <PageContainer>
@@ -137,21 +144,22 @@ const BusinessList = () => {
         </NavbarLink>
         <NavbarLinks>
           <Link href={`/create`}>
-            <NavbarLink>Crear Empresa</NavbarLink>
+            <NavbarLink>Crear empresa</NavbarLink>
           </Link>
           <Link href={`/categories`}>
-            <NavbarLink>Ver Categorías de Productos</NavbarLink>
+            <NavbarLink>Ver categorías de productos</NavbarLink>
           </Link>
           <Link href={`/products`}>
-            <NavbarLink>Ver Productos</NavbarLink>
+            <NavbarLink>Ver productos</NavbarLink>
           </Link>
         </NavbarLinks>
       </Navbar>
+      <Title>Empresas</Title>
       <TableContainer>
         <Table dataSource={businesses} columns={columns} rowKey="id" />
       </TableContainer>
       <Modal
-        title="Información de la Empresa"
+        title="Información de la empresa"
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -159,19 +167,28 @@ const BusinessList = () => {
         {selectedBusiness && (
           <ModalContent>
             {selectedBusiness.logoUrl && <img src={selectedBusiness.logoUrl} alt="Logo de la empresa" />}
-            <p>Razon Social: {selectedBusiness.razonSocial}</p>
-            <p>Nombre Comercial: {selectedBusiness.nombreComercial}</p>
+            <p>Razon social: {selectedBusiness.razonSocial}</p>
+            <p>Nombre comercial: {selectedBusiness.nombreComercial}</p>
             <p>Quienes somos: {selectedBusiness.quienesSomos}</p>
             <p>Sector: {selectedBusiness.sector}</p>
-            <p>Horario: {selectedBusiness.horario}</p>
+            <div>
+            <p>Horario:</p>
+            <ul>
+              {selectedBusiness.horario.map((entry, index) => (
+                <li key={index}>
+                  {entry.dia}: {entry.inicio} - {entry.fin}
+                </li>
+              ))}
+            </ul>
+          </div>
             <p>Telefono: {selectedBusiness.telefono}</p>
             <p>Facebook: {selectedBusiness.facebook}</p>
             <p>Instragam: {selectedBusiness.instagram}</p>
             <p>Linkedin: {selectedBusiness.linkedin}</p>
             <p>YouTube: {selectedBusiness.youtube}</p>
-            <p>Sitio Web: {selectedBusiness.sitioWeb}</p>
+            <p>Sitio web: {selectedBusiness.sitioWeb}</p>
             <p>Direccion: {selectedBusiness.direccion}</p>
-            <p>Direccion Georreferencia: {selectedBusiness.direccionGeorreferenciada}</p>
+            <p>Direccion georreferencia: {selectedBusiness.direccionGeorreferenciada}</p>
           </ModalContent>
         )}
       </Modal>

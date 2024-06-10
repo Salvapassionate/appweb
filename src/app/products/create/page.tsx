@@ -24,7 +24,7 @@ const Title = styled.h1`
 const CreateCategory = () => {
   return (
     <PageContainer>
-      <Title>Productos</Title>
+      <Title>Crear producto</Title>
         <ProductForm />
     </PageContainer>
   );
